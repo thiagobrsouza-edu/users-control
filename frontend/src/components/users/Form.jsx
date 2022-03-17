@@ -1,9 +1,20 @@
 import Link from "next/link";
-import { useState } from "react";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 
 export default function Form() {
 
+  const router = useRouter();
   const [user, setUser] = useState({});
+
+  const {id: userId} = router.query;
+  
+  useEffect(() => {
+    console.log(userId);
+    //if (userId) {
+      //setUser({... user});
+    //}
+  }, [userId]);
 
   const handleInputChange = (event) => {
     const {id, value} = event.target;
