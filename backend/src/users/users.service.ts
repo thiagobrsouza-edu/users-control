@@ -1,11 +1,28 @@
-import { Injectable } from '@nestjs/common';
+/* eslint-disable prettier/prettier */
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { User } from './entities/user.entity';
 
 @Injectable()
 export class UsersService {
-  create(createUserDto: CreateUserDto) {
-    return 'This action adds a new user';
+  constructor(
+    @InjectRepository(User)
+    private repository: Repository<User>,
+  ) {}
+
+  async create(createUserDto: CreateUserDto) {
+    const { name, email, password, profile} = createUserDto;
+    const exists = await this.repository.findOne({where: {email: email}});
+    if (exists) {
+      throw new HttpException('Usuário já cadastrado!', HttpStatus.CONFLICT);
+    }
+    const newUser = this.repository.create({name, email, password, profile});
+    await this.repository.save(newUser);
+    delete newUser.password;
+    return newUser;
   }
 
   findAll() {
