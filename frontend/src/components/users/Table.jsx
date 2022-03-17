@@ -5,10 +5,10 @@ export default function Table() {
   const router = useRouter();
 
   const users = [
-    {id: 1, name: 'Thiago', username: 'func01', profile: 'Admin'},
-    {id: 2, name: 'Yasmin', username: 'func02', profile: 'Padrão'},
-    {id: 3, name: 'Laura', username: 'func03', profile: 'Padrão'},
-    {id: 4, name: 'Pedro', username: 'func05', profile: 'Leitura'},
+    {id: 1, name: 'Thiago', email: 'thiago@email.com', profile: 'Admin'},
+    {id: 2, name: 'Yasmin', email: 'yasmin@email.com', profile: 'Padrão'},
+    {id: 3, name: 'Laura', email: 'laura@email.com', profile: 'Padrão'},
+    {id: 4, name: 'Pedro', email: 'pedro@email.com', profile: 'Leitura'},
   ];
 
   const selectUser = (user) => {
@@ -23,7 +23,7 @@ export default function Table() {
           <tr>
             <th>Código</th>
             <th>Nome</th>
-            <th>Usuário</th>
+            <th>E-mail</th>
             <th>Perfil</th>
             <th>Ações</th>
           </tr>
@@ -34,7 +34,7 @@ export default function Table() {
               <tr key={user.id}>
                 <td>{user.id}</td>
                 <td>{user.name}</td>
-                <td>{user.username}</td>
+                <td>{user.email}</td>
                 <td>{user.profile}</td>
                 <td>
                   <button className="btn btn-primary" onClick={e => selectUser(user)}>

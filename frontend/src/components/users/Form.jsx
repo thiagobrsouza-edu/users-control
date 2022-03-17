@@ -31,7 +31,7 @@ export default function Form() {
   return (
     <form className="row justify-content-center" onSubmit={submit}>
       <input className="form-control mb-3" type="text" placeholder="Nome" required id="name" onChange={handleInputChange}/>
-      <input className="form-control mb-3" type="text" placeholder="Usuário" required id="username" onChange={handleInputChange}/>
+      <input className="form-control mb-3" type="email" placeholder="E-mail" required id="email" onChange={handleInputChange}/>
       <input className="form-control mb-3" type="password" placeholder="Senha" required id="password" onChange={handleInputChange}/>
       <select className="form-select mb-3" required id="profile" onChange={handleInputChange}>
         <option value="">Selecione um perfil</option>
