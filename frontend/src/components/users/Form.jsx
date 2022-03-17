@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import { toast, ToastContainer } from "react-toastify";
 
 export default function Form() {
 
@@ -23,6 +24,7 @@ export default function Form() {
 
   const submit = (event) => {
     event.preventDefault();
+    toast.success('Salvo com sucesso!');
     console.log(user);
   }
 
@@ -41,6 +43,7 @@ export default function Form() {
       <Link href={"/users"}>
         <button className="btn btn-warning">Cancelar</button>
       </Link>
+      <ToastContainer />
     </form>
   )
 }
