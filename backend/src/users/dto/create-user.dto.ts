@@ -1,8 +1,8 @@
-import { IsEmail, IsEmpty, IsNotEmpty } from 'class-validator';
+/* eslint-disable prettier/prettier */
+import { IsEmail, IsNotEmpty, Matches } from 'class-validator';
+import { regexHelper } from 'src/utils/regex.helper';
 
 export class CreateUserDto {
-  @IsEmpty()
-  id: number;
 
   @IsNotEmpty()
   name: string;
@@ -12,6 +12,7 @@ export class CreateUserDto {
   email: string;
 
   @IsNotEmpty()
+  @Matches(regexHelper.password, {message: 'A senha deve ser de alta complexidade!'})
   password: string;
 
   @IsNotEmpty()

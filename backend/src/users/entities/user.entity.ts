@@ -1,5 +1,10 @@
+/* eslint-disable prettier/prettier */
 import * as bcrypt from 'bcrypt';
-import { BeforeInsert, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  BeforeInsert, Column,
+  Entity,
+  PrimaryGeneratedColumn
+} from 'typeorm';
 
 @Entity()
 export class User {
@@ -22,4 +27,5 @@ export class User {
   hashPassword() {
     this.password = bcrypt.hashSync(this.password, 8);
   }
+
 }

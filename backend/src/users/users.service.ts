@@ -1,8 +1,10 @@
 /* eslint-disable prettier/prettier */
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { hashSync } from 'bcrypt';
 import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
+import { UpdateUserPasswordDto } from './dto/update-user-pass.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
 
@@ -25,16 +27,34 @@ export class UsersService {
     return newUser;
   }
 
-  findAll() {
-    return `This action returns all users`;
+  async findAll() {
+    return this.repository.find({select: ['id', 'name', 'email', 'profile']});
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
+  async findOne(id: number) {
+    const user = await this.repository.findOne({where: {id: id}});
+    return user;
   }
 
-  update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
+  async update(id: number, updateUserDto: UpdateUserDto) {
+    const { name, email, profile} = updateUserDto;
+    const userFound = await this.repository.findOne({where: {id: id}});
+    const exists = await this.repository.findOne({where: {email: email}});
+    if (exists && (exists.id !== userFound.id)) {
+      throw new HttpException('User already exists!', HttpStatus.CONFLICT);
+    }
+    this.repository.merge(userFound, updateUserDto);
+    await this.repository.save(userFound);
+    delete userFound.password;
+    return userFound;
+  }
+
+  async updatePassword(id: number, updateUserPassDto: UpdateUserPasswordDto) {
+    const user = await this.repository.findOne({where: {id: id}});
+    this.repository.merge(user, updateUserPassDto);
+    user.password = hashSync(user.password, 8);
+    await this.repository.save(user);
+    return 'Senha atualizada com sucesso!';
   }
 
   remove(id: number) {
