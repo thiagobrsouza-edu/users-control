@@ -37,9 +37,8 @@ export class UsersService {
   }
 
   async update(id: number, updateUserDto: UpdateUserDto) {
-    const { name, email, profile} = updateUserDto;
     const userFound = await this.repository.findOne({where: {id: id}});
-    const exists = await this.repository.findOne({where: {email: email}});
+    const exists = await this.repository.findOne({where: {email: updateUserDto.email}});
     if (exists && (exists.id !== userFound.id)) {
       throw new HttpException('User already exists!', HttpStatus.CONFLICT);
     }
@@ -58,6 +57,6 @@ export class UsersService {
   }
 
   remove(id: number) {
-    return `This action removes a #${id} user`;
+    return this.repository.delete(id);
   }
 }
